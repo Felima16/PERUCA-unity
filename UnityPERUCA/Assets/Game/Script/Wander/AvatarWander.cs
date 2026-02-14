@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace AvatarLab.Wander
 {
-    [RequireComponent(typeof(Animator)), RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(Animator))]
     public class AvatarWander : MonoBehaviour
     {
         private const float ARRIVAL_DISTANCE = 1f;
@@ -18,11 +18,9 @@ namespace AvatarLab.Wander
         [SerializeField] private bool logChanges = false;
 
         private Animator animator;
-        private CharacterController characterController;
         private NavMeshAgent navMeshAgent;
         private Vector3 startPosition;
         private int totalIdleStateWeight;
-        private bool useNavMesh;
         private bool isStarted;
 
         private float moveSpeed;
@@ -60,13 +58,16 @@ namespace AvatarLab.Wander
 
             startPosition = transform.position;
             animator.applyRootMotion = false;
-            characterController = GetComponent<CharacterController>();
             navMeshAgent = GetComponent<NavMeshAgent>();
 
             if (navMeshAgent)
             {
-                useNavMesh = true;
                 navMeshAgent.stoppingDistance = ARRIVAL_DISTANCE;
+            }
+            else
+            {
+                Debug.LogError($"{gameObject.name} does not have a NavMeshAgent component.");
+                enabled = false;
             }
         }
 
@@ -148,7 +149,7 @@ namespace AvatarLab.Wander
         {
             isStarted = true;
             // Begin in wander so the avatar will pick a target and start moving
-            SetState(WanderState.Wander);
+            SetState(WanderState.Idle);
         }
 
         private void Update()
@@ -169,23 +170,23 @@ namespace AvatarLab.Wander
                 case WanderState.Idle:
                     if (Time.time >= idleEndTime)
                     {
-                        // SetState(WanderState.Wander);
+                        HandleBeginIdle();
                     }
                     break;
 
                 case WanderState.Wander:
                     targetPosition = wanderTarget;
-                    FaceDirection((targetPosition - position).normalized);
+                    // FaceDirection((targetPosition - position).normalized);
                     
                     if (HasReachedTarget(targetPosition))
                     {
-                        SetState(WanderState.Idle);
+                        wanderTarget = GenerateRandomWanderTarget();
                     }
                     break;
 
                 case WanderState.DirectMovement:
                     targetPosition = directMovementTarget;
-                    FaceDirection((targetPosition - position).normalized);
+                    // FaceDirection((targetPosition - position).normalized);
                     
                     if (HasReachedTarget(targetPosition))
                     {
@@ -195,43 +196,21 @@ namespace AvatarLab.Wander
                     break;
             }
 
-            var agentReady = navMeshAgent && navMeshAgent.isOnNavMesh;
-
-            if (agentReady)
-            {
-                // Use NavMeshAgent when it's actually on a NavMesh
-                if (characterController) characterController.enabled = false;
-                navMeshAgent.updatePosition = true;
-                navMeshAgent.updateRotation = false; // we handle rotation ourselves
-                navMeshAgent.isStopped = false;
-                navMeshAgent.speed = moveSpeed;
-                navMeshAgent.angularSpeed = Mathf.Max(1f, turnSpeed);
-                if (!navMeshAgent.hasPath || Vector3.Distance(navMeshAgent.destination, targetPosition) > 0.1f)
-                    navMeshAgent.SetDestination(targetPosition);
-            } else {
-                // fallback to CharacterController movement
-                if (navMeshAgent) navMeshAgent.isStopped = true;
-                if (characterController && !characterController.enabled) characterController.enabled = true;
-
-                var direction = Vector3.ProjectOnPlane(targetPosition - position, Vector3.up);
-                if (direction.sqrMagnitude > 0.001f && moveSpeed > 0f)
-                {
-                    var frameMovement = direction.normalized * moveSpeed * Time.deltaTime;
-                    characterController.Move(frameMovement);
-                }
-            }
+            // Use NavMeshAgent for movement
+            navMeshAgent.updatePosition = true;
+            navMeshAgent.updateRotation = true; // we handle rotation ourselves (FaceDirection), but we still want the agent to update it for proper animation
+            navMeshAgent.isStopped = false;
+            navMeshAgent.speed = moveSpeed;
+            navMeshAgent.angularSpeed = Mathf.Max(1f, turnSpeed);
+            if (!navMeshAgent.hasPath || Vector3.Distance(navMeshAgent.destination, targetPosition) > 0.1f)
+                navMeshAgent.SetDestination(targetPosition);
         }
 
         private bool HasReachedTarget(Vector3 targetPosition)
         {
-            if (useNavMesh && navMeshAgent)
-            {
-                if (navMeshAgent.pathPending)
-                    return false;
-                return navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.01f;
-            }
-
-            return Vector3.Distance(transform.position, targetPosition) < ARRIVAL_DISTANCE;
+            if (navMeshAgent.pathPending)
+                return false;
+            return navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.01f;
         }
 
         private void FaceDirection(Vector3 direction)
@@ -402,16 +381,10 @@ namespace AvatarLab.Wander
                     break;
 
                 case AvatarState.Edit:
+                    MoveToPosition(startPosition);
+                    break;
                 case AvatarState.Help:
-                    // Run to player position and idle
-                    if (playerPositionHelper != null)
-                    {
-                        MoveToPosition(playerPositionHelper.position);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("playerPositionHelper is not assigned on " + gameObject.name);
-                    }
+                    MoveToPosition(playerPositionHelper.position);
                     break;
             }
         }

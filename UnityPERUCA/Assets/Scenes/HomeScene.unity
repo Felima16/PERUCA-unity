@@ -3645,6 +3645,11 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!4 &444896473 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1269891368212719628, guid: ce42a2960e8f8411fa095f49ec8ade8c, type: 3}
+  m_PrefabInstance: {fileID: 1207409547504070074}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &454859444 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5289182684458692540, guid: e5db301629853dd4a99835fa70099d79, type: 3}
@@ -5651,7 +5656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ede9b57e9948b465d9f203b0d13808db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPositionHelper: {fileID: 1248156879}
+  playerPositionHelper: {fileID: 444896473}
   idleStates:
   - stateName: Generic
     animationBool: isGeneric
