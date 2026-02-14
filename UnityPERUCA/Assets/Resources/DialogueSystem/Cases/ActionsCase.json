@@ -1,0 +1,79 @@
+{
+    "cases": [
+        {
+            "id": "onBoardingStart",
+            "text": "Agora que já me editou, vamos começar a aventura!",
+            "image": null,
+            "options": [
+                {
+                "title": "Sim",
+                "nextSceneIndex": "welcome"
+                }
+            ]
+        },
+        {
+            "id": "welcome",
+            "text": "Para explorar a sala, precisa se locomover. Posso te explicar como se locomover por aqui?",
+            "image": null,
+            "options": [
+                {
+                    "title": "Sim",
+                    "nextSceneIndex": "actionsMenu"
+                },
+                {
+                    "title": "Não é necessário",
+                    "nextSceneIndex": "actionsExit"
+                }
+            ]
+        },
+        {
+            "id": "start",
+            "text": "Ola. Posso te explicar como funciona as ações disponíveis?",
+            "image": null,
+            "options": [
+                {
+                    "title": "Sim",
+                    "nextSceneIndex": "actionsMenu"
+                },
+                {
+                    "title": "Já não preciso, obrigado",
+                    "nextSceneIndex": "actionsExit"
+                }
+            ]
+        },
+        {
+            "id": "actionsMenu",
+            "text": "Para se locomover entre os pontos disponíveis, basta clicar no botão 'Ação' no Menu do seu pulso.",
+            "image": "DialogueSystem/images/mainMenu",
+            "options": [
+                {
+                    "title": "Prosseguir",
+                    "nextSceneIndex": "actionsList"
+                }
+            ]
+        },
+        {
+            "id": "actionsList",
+            "text": "Ao lado do menu, abrirá uma lista de ações disponíveis. Selecione a opção para mover-se para o local desejado.",
+            "image": "DialogueSystem/images/actionsMenu",
+            "options": [
+                {
+                    "title": "Obrigado",
+                    "nextSceneIndex": "actionsEnd"
+                }
+            ]
+        },
+        {
+            "id": "actionsEnd",
+            "text": "Espero ter ajudado! Caso tenha mais dúvidas, estarei disponível no Menu que esta no seu pulso.",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        },
+        {
+            "id": "actionsExit",
+            "text": "Qualquer dúvida, pode me chamar pelo Menu no seu pulso!",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        }
+    ]
+}

@@ -1,0 +1,118 @@
+{
+    "cases": [
+        {
+            "id": "onBoardingStart",
+            "text": "Ola, bem-vindo ao jogo!",
+            "image": null,
+            "options": [
+                {
+                "title": "Ola",
+                "nextSceneIndex": "welcome"
+                }
+            ]
+        },
+        {
+            "id": "welcome",
+            "text": "Eu sou o PERUCA, seu guia neste jogo. Estou aqui para te ajudar. Posso te explicar como me editar?",
+            "image": null,
+            "options": [
+                {
+                    "title": "Sim",
+                    "nextSceneIndex": "avatarEditorTutorial"
+                },
+                {
+                    "title": "Já conheço, prefiro pular",
+                    "nextSceneIndex": "avatarCustomizationExit"
+                }
+            ]
+        },
+        {
+            "id": "start",
+            "text": "Ola novamente. Posso te explicar como me editar?",
+            "image": null,
+            "options": [
+                {
+                    "title": "Sim",
+                    "nextSceneIndex": "avatarEditorTutorial"
+                },
+                {
+                    "title": "Já não preciso, obrigado",
+                    "nextSceneIndex": "avatarEditorExit"
+                }
+            ]
+        },
+        {
+            "id": "avatarEditorTutorial",
+            "text": "Ótimo! Nesse espaço é possível mudar minha aparência.",
+            "image": null,
+            "options": [
+                {
+                    "title": "Prosseguir",
+                    "nextSceneIndex": "customizeLeftSide"
+                }
+            ]
+        },
+        {
+            "id": "avatarCustomizationExit",
+            "text": "Tudo bem, caso precise, me chame no Menu do seu pulso!",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        },
+        {
+            "id": "avatarEditorExit",
+            "text": "Sem problemas, lembre-se que pode me chamar a qualquer momento pelo Menu no seu pulso.",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        },
+        {
+            "id": "customizeLeftSide",
+            "text": "Ao lado esquerdo, use os paineis para mudar a cor de cabelo, olhos e pele e escolher meu gênero.",
+            "image": null,
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeLeftSide2"
+                }
+            ]
+        },
+        {
+            "id": "customizeLeftSide2",
+            "text": "Selecione uma opção no painel dos tipos para abrir as opções de cores. Ao escolher uma cor, ela será aplicada automaticamente.",
+            "image": "DialogueSystem/images/optionsTypeColors",
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeRightSide1"
+                }
+            ]
+        },
+        {
+            "id": "customizeRightSide1",
+            "text": "No lado direito, escolha diferentes tipos de cabelo, pegue um e arrate para minha cabeça.",
+            "image": null,
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeRightSide2"
+                }
+            ]
+        },
+        {
+            "id": "customizeRightSide2",
+            "text": "Ao finalizar, clique no botão 'Concluir Edição'. Caso queira voltar a editar, clique em 'Editar Avatar' no Menu do seu pulso.",
+            "image": null,
+            "options": [
+                {
+                    "title": "Percebi, obrigada!",
+                    "nextSceneIndex": "onBordingEnd"
+                }
+            ]
+        },
+        {
+            "id": "onBordingEnd",
+            "text": "Divirta-se jogando! Se precisar de ajuda, é só me chamar no Menu que esta no seu pulso.",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        }
+    ]
+}
