@@ -10,6 +10,7 @@ namespace AvatarLab.Wander
     public class AvatarWander : MonoBehaviour
     {
         private const float ARRIVAL_DISTANCE = 1f;
+        private const float EDIT_DISTANCE = 0f;
         private const float WANDER_RANGE = 10f;
 
         [SerializeField] private Transform playerPositionHelper;
@@ -198,7 +199,7 @@ namespace AvatarLab.Wander
 
             // Use NavMeshAgent for movement
             navMeshAgent.updatePosition = true;
-            navMeshAgent.updateRotation = true; // we handle rotation ourselves (FaceDirection), but we still want the agent to update it for proper animation
+            navMeshAgent.updateRotation = true;
             navMeshAgent.isStopped = false;
             navMeshAgent.speed = moveSpeed;
             navMeshAgent.angularSpeed = Mathf.Max(1f, turnSpeed);
@@ -382,9 +383,11 @@ namespace AvatarLab.Wander
 
                 case AvatarState.Edit:
                     MoveToPosition(startPosition);
+                    navMeshAgent.stoppingDistance = EDIT_DISTANCE;
                     break;
                 case AvatarState.Help:
                     MoveToPosition(playerPositionHelper.position);
+                    navMeshAgent.stoppingDistance = ARRIVAL_DISTANCE;
                     break;
             }
         }

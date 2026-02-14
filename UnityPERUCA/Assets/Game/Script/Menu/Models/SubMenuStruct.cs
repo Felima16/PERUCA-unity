@@ -47,6 +47,7 @@ public class MenuOption
        // Implementation for going to avatar edit
         DebugManager.instance.MyLOG("->>>> Navigating to Avatar Edit");
         TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.AvatarEdit);
+        AvatarManager.instance.UpdateAvatarState(AvatarState.Edit);
     }
 
     private void GoToOrganiseGame()
