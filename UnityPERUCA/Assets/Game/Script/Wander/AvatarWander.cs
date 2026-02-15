@@ -382,12 +382,12 @@ namespace AvatarLab.Wander
                     break;
 
                 case AvatarState.Edit:
-                    MoveToPosition(startPosition);
                     navMeshAgent.stoppingDistance = EDIT_DISTANCE;
+                    MoveToPosition(startPosition);
                     break;
                 case AvatarState.Help:
-                    MoveToPosition(playerPositionHelper.position);
                     navMeshAgent.stoppingDistance = ARRIVAL_DISTANCE;
+                    MoveToPosition(playerPositionHelper.position);
                     break;
             }
         }
