@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HomeScene.unity
     guid: 307cbf073ad7945b3b8ed62b33481eb4
-  - enabled: 0
-    path: Assets/Scenes/HandTest.unity
-    guid: d2f9e9d4e19f54f20a197e84d3a9990b
   m_configObjects:
     Unity.XR.PXR.Settings: {fileID: 11400000, guid: bb5544ce860594ec9ac44700af3315e2, type: 2}
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}

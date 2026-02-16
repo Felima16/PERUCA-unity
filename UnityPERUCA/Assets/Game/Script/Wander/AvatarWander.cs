@@ -6,11 +6,12 @@ using UnityEngine.AI;
 
 namespace AvatarLab.Wander
 {
-    [RequireComponent(typeof(Animator)), RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(Animator))]
     public class AvatarWander : MonoBehaviour
     {
         private const float ARRIVAL_DISTANCE = 1f;
-        private const float WANDER_RANGE = 10f;
+        private const float EDIT_DISTANCE = 0f;
+        private const float WANDER_RANGE = 50f;
 
         [SerializeField] private Transform playerPositionHelper;
         [SerializeField] private IdleState[] idleStates;
@@ -18,11 +19,10 @@ namespace AvatarLab.Wander
         [SerializeField] private bool logChanges = false;
 
         private Animator animator;
-        private CharacterController characterController;
         private NavMeshAgent navMeshAgent;
         private Vector3 startPosition;
+        private Vector3 editPosition;
         private int totalIdleStateWeight;
-        private bool useNavMesh;
         private bool isStarted;
 
         private float moveSpeed;
@@ -30,6 +30,7 @@ namespace AvatarLab.Wander
         private Vector3 wanderTarget;
         private Vector3 directMovementTarget;
         private float idleEndTime;
+        private float wanderEndTime;
         private readonly HashSet<string> animatorParameters = new HashSet<string>();
 
         public enum WanderState { Idle, Wander, DirectMovement }
@@ -59,14 +60,18 @@ namespace AvatarLab.Wander
             }
 
             startPosition = transform.position;
+            editPosition = startPosition; // Can be set to a different position if needed
             animator.applyRootMotion = false;
-            characterController = GetComponent<CharacterController>();
             navMeshAgent = GetComponent<NavMeshAgent>();
 
             if (navMeshAgent)
             {
-                useNavMesh = true;
                 navMeshAgent.stoppingDistance = ARRIVAL_DISTANCE;
+            }
+            else
+            {
+                Debug.LogError($"{gameObject.name} does not have a NavMeshAgent component.");
+                enabled = false;
             }
         }
 
@@ -148,7 +153,7 @@ namespace AvatarLab.Wander
         {
             isStarted = true;
             // Begin in wander so the avatar will pick a target and start moving
-            SetState(WanderState.Wander);
+            SetState(WanderState.Idle);
         }
 
         private void Update()
@@ -169,23 +174,29 @@ namespace AvatarLab.Wander
                 case WanderState.Idle:
                     if (Time.time >= idleEndTime)
                     {
-                        // SetState(WanderState.Wander);
+                        if(AvatarManager.instance.state == AvatarState.Game)
+                            SetState(WanderState.Wander);
+                        else
+                            HandleBeginIdle();
                     }
                     break;
 
                 case WanderState.Wander:
                     targetPosition = wanderTarget;
-                    FaceDirection((targetPosition - position).normalized);
                     
                     if (HasReachedTarget(targetPosition))
                     {
-                        SetState(WanderState.Idle);
+                        if (Time.time >= wanderEndTime) {
+                            SetState(WanderState.Idle);
+                        }
+                        else
+                        {
+                            targetPosition = GenerateRandomWanderTarget();
+                        }
                     }
                     break;
-
                 case WanderState.DirectMovement:
                     targetPosition = directMovementTarget;
-                    FaceDirection((targetPosition - position).normalized);
                     
                     if (HasReachedTarget(targetPosition))
                     {
@@ -195,43 +206,21 @@ namespace AvatarLab.Wander
                     break;
             }
 
-            var agentReady = navMeshAgent && navMeshAgent.isOnNavMesh;
-
-            if (agentReady)
-            {
-                // Use NavMeshAgent when it's actually on a NavMesh
-                if (characterController) characterController.enabled = false;
-                navMeshAgent.updatePosition = true;
-                navMeshAgent.updateRotation = false; // we handle rotation ourselves
-                navMeshAgent.isStopped = false;
-                navMeshAgent.speed = moveSpeed;
-                navMeshAgent.angularSpeed = Mathf.Max(1f, turnSpeed);
-                if (!navMeshAgent.hasPath || Vector3.Distance(navMeshAgent.destination, targetPosition) > 0.1f)
-                    navMeshAgent.SetDestination(targetPosition);
-            } else {
-                // fallback to CharacterController movement
-                if (navMeshAgent) navMeshAgent.isStopped = true;
-                if (characterController && !characterController.enabled) characterController.enabled = true;
-
-                var direction = Vector3.ProjectOnPlane(targetPosition - position, Vector3.up);
-                if (direction.sqrMagnitude > 0.001f && moveSpeed > 0f)
-                {
-                    var frameMovement = direction.normalized * moveSpeed * Time.deltaTime;
-                    characterController.Move(frameMovement);
-                }
-            }
+            // Use NavMeshAgent for movement
+            navMeshAgent.updatePosition = true;
+            navMeshAgent.updateRotation = true;
+            navMeshAgent.isStopped = false;
+            navMeshAgent.speed = moveSpeed;
+            navMeshAgent.angularSpeed = Mathf.Max(1f, turnSpeed);
+            if (!navMeshAgent.hasPath || Vector3.Distance(navMeshAgent.destination, targetPosition) > 0.1f)
+                navMeshAgent.SetDestination(targetPosition);
         }
 
         private bool HasReachedTarget(Vector3 targetPosition)
         {
-            if (useNavMesh && navMeshAgent)
-            {
-                if (navMeshAgent.pathPending)
-                    return false;
-                return navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.01f;
-            }
-
-            return Vector3.Distance(transform.position, targetPosition) < ARRIVAL_DISTANCE;
+            if (navMeshAgent.pathPending)
+                return false;
+            return navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.01f;
         }
 
         private void FaceDirection(Vector3 direction)
@@ -294,6 +283,7 @@ namespace AvatarLab.Wander
 
         private void HandleBeginWander()
         {
+            wanderEndTime = Time.time + movementStates.FirstOrDefault(s => s.stateName == "Walking").maxStateTime;
             wanderTarget = GenerateRandomWanderTarget();
             SetMovementState(GetSlowestMovementState());
             movementEvent?.Invoke();
@@ -307,8 +297,17 @@ namespace AvatarLab.Wander
 
         private Vector3 GenerateRandomWanderTarget()
         {
-            var randomDirection = UnityEngine.Random.insideUnitSphere * WANDER_RANGE;
-            var targetPos = startPosition + randomDirection;
+            // Generate a random direction on the XZ plane
+            var randomAngle = UnityEngine.Random.Range(0f, 360f);
+            var randomDistance = UnityEngine.Random.Range(WANDER_RANGE * 0.5f, WANDER_RANGE);
+            
+            var direction = new Vector3(
+                Mathf.Cos(randomAngle * Mathf.Deg2Rad),
+                0f,
+                Mathf.Sin(randomAngle * Mathf.Deg2Rad)
+            );
+            
+            var targetPos = transform.position + direction * randomDistance;
             ValidateNavMeshPosition(ref targetPos);
             return targetPos;
         }
@@ -318,7 +317,8 @@ namespace AvatarLab.Wander
             if (!navMeshAgent)
                 return;
 
-            if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas))
+            // Use WANDER_RANGE as the search radius to keep targets within intended range
+            if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, WANDER_RANGE, NavMesh.AllAreas))
             {
                 targetPos = hit.position;
             }
@@ -402,16 +402,12 @@ namespace AvatarLab.Wander
                     break;
 
                 case AvatarState.Edit:
+                    navMeshAgent.stoppingDistance = EDIT_DISTANCE;
+                    MoveToPosition(editPosition);
+                    break;
                 case AvatarState.Help:
-                    // Run to player position and idle
-                    if (playerPositionHelper != null)
-                    {
-                        MoveToPosition(playerPositionHelper.position);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("playerPositionHelper is not assigned on " + gameObject.name);
-                    }
+                    navMeshAgent.stoppingDistance = ARRIVAL_DISTANCE;
+                    MoveToPosition(playerPositionHelper.position);
                     break;
             }
         }
