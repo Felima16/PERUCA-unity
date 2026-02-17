@@ -26,7 +26,8 @@ public class MenuScript : MonoBehaviour
         new Menu("Ação", MainMenu.Teleport, new MenuOption[]
         {
             new MenuOption("Editar Avatar", SubMenu.GoToAvatarEdit),
-            new MenuOption("Ir ao jogo Organizar", SubMenu.GoToOrganiseGame)
+            new MenuOption("Ir ao jogo Organizar", SubMenu.GoToOrganiseGame),
+            new MenuOption("Ver a janela", SubMenu.GoToWindow)
         }),
         new Menu("Ajuda do Avatar", MainMenu.AvatarHelp, new MenuOption[]
         {
