@@ -138,13 +138,13 @@ public class TeleportManager: MonoBehaviour
                 break;
         }
         
-        Quaternion flippedRotation = Quaternion.Euler(0, anchor.transform.eulerAngles.y + yAngle, 0);
+        Quaternion destinationRotation = Quaternion.Euler(0, anchor.transform.eulerAngles.y + yAngle, 0);
 
         // Create a teleportation request using the anchor's position and rotation
         var teleportRequest = new TeleportRequest
         {
             destinationPosition = anchor.transform.position,
-            destinationRotation = flippedRotation,
+            destinationRotation = destinationRotation,
             matchOrientation = MatchOrientation.TargetUpAndForward
         };
         teleportationProvider.QueueTeleportRequest(teleportRequest);
@@ -155,7 +155,7 @@ public enum TeleportPlaces
 {
     AvatarEdit,
     OrganiseGame,
-    Windown
+    Window
 }
 
 public enum TeleportDirection

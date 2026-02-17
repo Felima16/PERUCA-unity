@@ -50,7 +50,7 @@ public class MenuOption
     {
        // Implementation for going to avatar edit
         DebugManager.instance.MyLOG("->>>> Navigating to Avatar Edit");
-        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.AvatarEdit, TeleportDirection.Backward);
+        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.AvatarEdit, TeleportDirection.Left);
         AvatarManager.instance.UpdateAvatarState(AvatarState.Edit);
     }
 
@@ -58,7 +58,7 @@ public class MenuOption
     {
        // Implementation for going to window
         DebugManager.instance.MyLOG("->>>> Navigating to Window");
-        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.Windown, TeleportDirection.Forward);
+        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.Window, TeleportDirection.Backward);
     }
 
     private void GoToOrganiseGame()
