@@ -50,7 +50,7 @@ public class MenuOption
     {
        // Implementation for going to avatar edit
         DebugManager.instance.MyLOG("->>>> Navigating to Avatar Edit");
-        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.AvatarEdit);
+        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.AvatarEdit, TeleportDirection.Backward);
         AvatarManager.instance.UpdateAvatarState(AvatarState.Edit);
     }
 
@@ -58,14 +58,14 @@ public class MenuOption
     {
        // Implementation for going to window
         DebugManager.instance.MyLOG("->>>> Navigating to Window");
-        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.Windown);
+        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.Windown, TeleportDirection.Forward);
     }
 
     private void GoToOrganiseGame()
     {
        // Implementation for going to organise game
         DebugManager.instance.MyLOG("->>>> Navigating to Organise Game");
-        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.OrganiseGame);
+        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.OrganiseGame, TeleportDirection.Right);
     }
 
     private void HowToEditAvatar()

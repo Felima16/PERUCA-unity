@@ -98,7 +98,7 @@ public class TeleportManager: MonoBehaviour
     /// <summary>
     /// Teleport to a specific anchor by reference
     /// </summary>
-    public void TeleportToAnchor(TeleportPlaces anchorPlace)
+    public void TeleportToAnchor(TeleportPlaces anchorPlace, TeleportDirection direction = TeleportDirection.Forward)
     {
         if (teleportationProvider == null)
         {
@@ -120,13 +120,32 @@ public class TeleportManager: MonoBehaviour
         }
 
         Debug.Log($"[TeleportManager] Teleporting to anchor: {anchor.gameObject.name}");
+
+        var yAngle = 0f;
+        switch (direction)
+        {            
+            case TeleportDirection.Forward:
+                yAngle = 0f;
+                break;
+            case TeleportDirection.Backward:
+                yAngle = 180f;
+                break;
+            case TeleportDirection.Left:
+                yAngle = -90f;
+                break;
+            case TeleportDirection.Right:
+                yAngle = 90f;
+                break;
+        }
         
+        Quaternion flippedRotation = Quaternion.Euler(0, anchor.transform.eulerAngles.y + yAngle, 0);
+
         // Create a teleportation request using the anchor's position and rotation
         var teleportRequest = new TeleportRequest
         {
             destinationPosition = anchor.transform.position,
-            destinationRotation = anchor.transform.rotation,
-            matchOrientation = MatchOrientation.WorldSpaceUp
+            destinationRotation = flippedRotation,
+            matchOrientation = MatchOrientation.TargetUpAndForward
         };
         teleportationProvider.QueueTeleportRequest(teleportRequest);
     }
@@ -137,4 +156,12 @@ public enum TeleportPlaces
     AvatarEdit,
     OrganiseGame,
     Windown
+}
+
+public enum TeleportDirection
+{
+    Forward,
+    Backward,
+    Left,
+    Right
 }
