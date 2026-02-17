@@ -120,14 +120,13 @@ public class TeleportManager: MonoBehaviour
         }
 
         Debug.Log($"[TeleportManager] Teleporting to anchor: {anchor.gameObject.name}");
-
-
         
         // Create a teleportation request using the anchor's position and rotation
         var teleportRequest = new TeleportRequest
         {
             destinationPosition = anchor.transform.position,
-            destinationRotation = anchor.transform.rotation
+            destinationRotation = anchor.transform.rotation,
+            matchOrientation = MatchOrientation.WorldSpaceUp
         };
         teleportationProvider.QueueTeleportRequest(teleportRequest);
     }
@@ -136,5 +135,6 @@ public class TeleportManager: MonoBehaviour
 public enum TeleportPlaces
 {
     AvatarEdit,
-    OrganiseGame
+    OrganiseGame,
+    Windown
 }

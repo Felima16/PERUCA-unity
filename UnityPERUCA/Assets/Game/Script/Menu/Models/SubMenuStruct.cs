@@ -4,6 +4,7 @@ public enum SubMenu
 {
     GoToAvatarEdit,
     GoToOrganiseGame,
+    GoToWindow,
     HowToMove,
     HowToEditAvatar,
     HowToPlayOrganiseGame
@@ -39,6 +40,9 @@ public class MenuOption
             case SubMenu.HowToEditAvatar:
                 HowToEditAvatar();
                 break;
+            case SubMenu.GoToWindow:
+                GoToWindow();
+                break;
         }
     }
 
@@ -48,6 +52,13 @@ public class MenuOption
         DebugManager.instance.MyLOG("->>>> Navigating to Avatar Edit");
         TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.AvatarEdit);
         AvatarManager.instance.UpdateAvatarState(AvatarState.Edit);
+    }
+
+    private void GoToWindow()
+    {
+       // Implementation for going to window
+        DebugManager.instance.MyLOG("->>>> Navigating to Window");
+        TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.Windown);
     }
 
     private void GoToOrganiseGame()
