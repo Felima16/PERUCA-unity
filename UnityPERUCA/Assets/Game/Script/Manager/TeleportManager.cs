@@ -8,6 +8,7 @@ public class TeleportManager: MonoBehaviour
     private static TeleportManager instance;
     private static List<TeleportationAnchor> teleportAnchors = new List<TeleportationAnchor>();
     private TeleportationProvider teleportationProvider;
+    private TeleportPlaces? lastRequestedPlace = null;
 
     /// <summary>
     /// Get the singleton instance of TeleportManager
@@ -122,6 +123,7 @@ public class TeleportManager: MonoBehaviour
         }
 
         Debug.Log($"[TeleportManager] Teleporting to anchor: {anchor.gameObject.name}");
+        lastRequestedPlace = anchorPlace;
 
         var yAngle = 0f;
         switch (direction)
@@ -155,7 +157,11 @@ public class TeleportManager: MonoBehaviour
     private void OnTeleportCompleted(LocomotionProvider locomotionProvider)
     {
         Debug.Log("[TeleportManager] Teleportation completed.");
-        DialogueManager.instance.VerifyShouldShowOrganiseGameDialogue();
+        if (lastRequestedPlace == TeleportPlaces.OrganiseGame)
+        {
+            DialogueManager.instance.VerifyShouldShowOrganiseGameDialogue();
+        }
+        lastRequestedPlace = null;
     }
 }
 
