@@ -55,9 +55,8 @@ public class TeleportManager: MonoBehaviour
         else
         {
             Debug.Log("[TeleportManager] Found TeleportationProvider");
+            teleportationProvider.locomotionEnded += OnTeleportCompleted;
         }
-
-        teleportationProvider.locomotionEnded += OnTeleportCompleted;
     }
 
     /// <summary>

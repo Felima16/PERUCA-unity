@@ -22,7 +22,6 @@ namespace AvatarLab.Wander
         private NavMeshAgent navMeshAgent;
         private Vector3 startPosition;
         private Vector3 editPosition;
-        private Vector3 currentAnchorPosition;
         private int totalIdleStateWeight;
         private bool isStarted;
 
