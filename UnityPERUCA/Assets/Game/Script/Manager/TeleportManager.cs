@@ -95,7 +95,10 @@ public class TeleportManager: MonoBehaviour
         {
             instance = null;
             teleportAnchors.Clear();
-            teleportationProvider.locomotionEnded -= OnTeleportCompleted;
+            if (teleportationProvider != null)
+            {
+                teleportationProvider.locomotionEnded -= OnTeleportCompleted;
+            }
         }
     }
 

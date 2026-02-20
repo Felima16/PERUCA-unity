@@ -11,7 +11,7 @@
                 },
                 {
                     "title": "Já conheço",
-                    "nextSceneIndex": "onBordingEnd"
+                    "nextSceneIndex": "onBoardingEnd"
                 }
             ]
         },
@@ -65,7 +65,7 @@
         },
         {
             "id": "organiseGameColumn",
-            "text": "Lembre-se que somente é possivel 3 peças por coluna, e que as peças só podem ser movidas para um espaço vazio.",
+            "text": "Lembre-se que somente é possível 3 peças por coluna, e que as peças só podem ser movidas para um espaço vazio.",
             "image": null,
             "options": [
                 {
@@ -75,7 +75,7 @@
             ]
         },
         {
-            "id": "onBordingEnd",
+            "id": "onBoardingEnd",
             "text": "Ótimo! Caso deseje relembrar algo, pode me chamar no Menu que esta no seu pulso.",
             "image": "DialogueSystem/images/handMenu",
             "options": []

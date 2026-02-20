@@ -62,6 +62,12 @@ public class DialogueManager : MonoBehaviour
     void OnDestroy()
     {
         instance = null;
+        finishButton.onClick.RemoveListener(() => FinishDialogue());
+        for (int i = 0; i < optionButtons.Length; i++)
+        {
+            int index = i; // Capture the current index for the button click event
+            optionButtons[i].onClick.RemoveListener(() => OnOptionSelected(index));
+        }
     }
 
     // Method to handle dialogue cases

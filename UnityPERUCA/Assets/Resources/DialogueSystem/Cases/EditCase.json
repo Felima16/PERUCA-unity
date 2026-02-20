@@ -109,12 +109,12 @@
         },
         {
             "id": "customizeFinish",
-            "text": "Ao finalizar, clique no botão 'Concluir Edição'. Caso para me editar novamente, clique em 'Ações' -> 'Editar Avatar' no Menu do seu pulso.",
+            "text": "Ao finalizar, clique no botão 'Concluir Edição'. Caso queira me editar novamente, clique em 'Ações' -> 'Editar Avatar' no Menu do seu pulso.",
             "image": null,
             "options": [
                 {
                     "title": "Percebi, obrigada!",
-                    "nextSceneIndex": "onBordingEnd"
+                    "nextSceneIndex": "onBoardingEnd"
                 }
             ]
         },
@@ -131,8 +131,8 @@
             "options": []
         },
         {
-            "id": "onBordingEnd",
-            "text": "Divirta-se jogando! Se precisar de ajuda, é só me chamar no Menu que esta no seu pulso.",
+            "id": "onBoardingEnd",
+            "text": "Divirta-se jogando! Se precisar de ajuda, me chamar no Menu que está no seu pulso.",
             "image": "DialogueSystem/images/handMenu",
             "options": []
         }
