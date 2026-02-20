@@ -54,6 +54,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueCases = SceneManager.Instance.GetScenes();
         finishButton.gameObject.SetActive(false);
+        finishButton.onClick.AddListener(() => FinishDialogue());
         SetupUI(); // Setup UI for dialogue options
         SetDialogueScene(DialogueScene.AvatarEditor, true); // Start with AvatarEditor scene and onboarding
     }
@@ -76,8 +77,8 @@ public class DialogueManager : MonoBehaviour
     // Method to set the dialogue sequence based on the current scene
     public void SetDialogueScene(DialogueScene newScene, bool isOnboarding = false)
     {
-        bool isFirstTimeAction = newScene == DialogueScene.Actions && isOnboarding;
-        previousAvatarState = isFirstTimeAction ? AvatarState.Game : AvatarManager.instance.state;
+        bool isActionsOnboarding = newScene == DialogueScene.Actions && isOnboarding;
+        previousAvatarState = isActionsOnboarding ? AvatarState.Game : AvatarManager.instance.state;
         AvatarManager.instance.UpdateAvatarState(AvatarState.Help);
         
         scene = newScene;
@@ -176,7 +177,6 @@ public class DialogueManager : MonoBehaviour
         {
             finishButton.gameObject.SetActive(true);
             finishButton.GetComponentInChildren<TextMeshProUGUI>().text = "Finalizar";
-            finishButton.onClick.AddListener(() => FinishDialogue());
         }
     }
 

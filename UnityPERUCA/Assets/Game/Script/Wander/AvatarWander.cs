@@ -191,9 +191,10 @@ namespace AvatarLab.Wander
                     }
                     else
                     {
-                        if (HasReachedTarget())
+                        if (HasReachedTarget()) {
                             wanderTarget = GenerateRandomWanderTarget();
                             targetPosition = wanderTarget;
+                        }
                     }
                     break;
                 case WanderState.DirectMovement:

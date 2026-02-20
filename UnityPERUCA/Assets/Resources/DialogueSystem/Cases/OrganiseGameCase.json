@@ -44,7 +44,7 @@
         {
             "id": "organiseGameMovePiece",
             "text": "Para mover as peças, coloque o dedo indicador em cima da peça ou use o movimento de pinça para selecionar e arraste para a posição desejada.",
-            "image": "DialogueSystem/images/movePiece",
+            "image": "DialogueSystem/images/pieceMove",
             "options": [
                 {
                     "title": "Próximo",

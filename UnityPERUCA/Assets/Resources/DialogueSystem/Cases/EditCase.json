@@ -75,6 +75,17 @@
             ]
         },
         {
+            "id": "customizeLeftSideHandlePanel",
+            "text": "Selecione uma opção no painel dos tipos, para abrir as opções de cores. Ao escolher uma cor, ela será aplicada automaticamente.",
+            "image": "DialogueSystem/images/handlePanel",
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeLeftSideRotate"
+                }
+            ]
+        },
+        {
             "id": "customizeLeftSideRotate",
             "text": "Para me rotacionar, use o botão de rotação. Começarei a rodar, e para parar, clique novamente no botão de rotação.",
             "image": "DialogueSystem/images/rotateButton",
@@ -87,7 +98,7 @@
         },
         {
             "id": "customizeRightSideHair",
-            "text": "No lado direito, escolha diferentes tipos de cabelo, pegue um e arrate para minha cabeça.",
+            "text": "No lado direito, escolha diferentes tipos de cabelo, pegue um e arraste para minha cabeça.",
             "image": "DialogueSystem/images/hairs",
             "options": [
                 {
