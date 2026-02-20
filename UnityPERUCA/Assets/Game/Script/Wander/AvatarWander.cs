@@ -218,12 +218,13 @@ namespace AvatarLab.Wander
             }
 
             // Use NavMeshAgent for movement
+            bool isRotating = CurrentState == WanderState.DirectMovement && HasReachedTarget() && shouldRotateToTarget;
             navMeshAgent.updatePosition = true;
-            navMeshAgent.updateRotation = true; //!shouldRotateToTarget || CurrentState != WanderState.DirectMovement;
-            navMeshAgent.isStopped = false;
+            navMeshAgent.updateRotation = !isRotating;
+            navMeshAgent.isStopped = isRotating;
             navMeshAgent.speed = moveSpeed;
             navMeshAgent.angularSpeed = Mathf.Max(1f, turnSpeed);
-            if (!navMeshAgent.hasPath || Vector3.Distance(navMeshAgent.destination, targetPosition) > 0.1f)
+            if (!isRotating && (!navMeshAgent.hasPath || Vector3.Distance(navMeshAgent.destination, targetPosition) > 0.1f))
                 navMeshAgent.SetDestination(targetPosition);
         }
 
