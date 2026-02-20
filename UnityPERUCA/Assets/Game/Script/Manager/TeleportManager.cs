@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion;
 using System.Collections.Generic;
 
 public class TeleportManager: MonoBehaviour
@@ -55,6 +56,8 @@ public class TeleportManager: MonoBehaviour
         {
             Debug.Log("[TeleportManager] Found TeleportationProvider");
         }
+
+        teleportationProvider.locomotionEnded += OnTeleportCompleted;
     }
 
     /// <summary>
@@ -148,6 +151,12 @@ public class TeleportManager: MonoBehaviour
             matchOrientation = MatchOrientation.TargetUpAndForward
         };
         teleportationProvider.QueueTeleportRequest(teleportRequest);
+    }
+
+    private void OnTeleportCompleted(LocomotionProvider locomotionProvider)
+    {
+        Debug.Log("[TeleportManager] Teleportation completed.");
+        DialogueManager.instance.VerifyShouldShowOrganiseGameDialogue();
     }
 }
 

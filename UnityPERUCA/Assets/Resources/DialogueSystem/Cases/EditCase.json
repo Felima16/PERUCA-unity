@@ -36,7 +36,7 @@
                     "nextSceneIndex": "avatarEditorTutorial"
                 },
                 {
-                    "title": "Já não preciso, obrigado",
+                    "title": "Já não é preciso, obrigado",
                     "nextSceneIndex": "avatarEditorExit"
                 }
             ]
@@ -53,6 +53,61 @@
             ]
         },
         {
+            "id": "customizeLeftSide",
+            "text": "Ao lado esquerdo, use os paineis para mudar a cor de cabelo, olhos e pele. Pode escolher meu gênero também.",
+            "image": null,
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeLeftSideOptions"
+                }
+            ]
+        },
+        {
+            "id": "customizeLeftSideOptions",
+            "text": "Selecione uma opção no painel dos tipos, para abrir as opções de cores. Ao escolher uma cor, ela será aplicada automaticamente.",
+            "image": "DialogueSystem/images/optionsTypeColors",
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeLeftSideRotate"
+                }
+            ]
+        },
+        {
+            "id": "customizeLeftSideRotate",
+            "text": "Para me rotacionar, use o botão de rotação. Começarei a rodar, e para parar, clique novamente no botão de rotação.",
+            "image": "DialogueSystem/images/rotateButton",
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeRightSideHair"
+                }
+            ]
+        },
+        {
+            "id": "customizeRightSideHair",
+            "text": "No lado direito, escolha diferentes tipos de cabelo, pegue um e arrate para minha cabeça.",
+            "image": "DialogueSystem/images/hairs",
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "customizeFinish"
+                }
+            ]
+        },
+        {
+            "id": "customizeFinish",
+            "text": "Ao finalizar, clique no botão 'Concluir Edição'. Caso para me editar novamente, clique em 'Ações' -> 'Editar Avatar' no Menu do seu pulso.",
+            "image": null,
+            "options": [
+                {
+                    "title": "Percebi, obrigada!",
+                    "nextSceneIndex": "onBordingEnd"
+                }
+            ]
+        },
+        {
             "id": "avatarCustomizationExit",
             "text": "Tudo bem, caso precise, me chame no Menu do seu pulso!",
             "image": "DialogueSystem/images/handMenu",
@@ -63,50 +118,6 @@
             "text": "Sem problemas, lembre-se que pode me chamar a qualquer momento pelo Menu no seu pulso.",
             "image": "DialogueSystem/images/handMenu",
             "options": []
-        },
-        {
-            "id": "customizeLeftSide",
-            "text": "Ao lado esquerdo, use os paineis para mudar a cor de cabelo, olhos e pele e escolher meu gênero.",
-            "image": null,
-            "options": [
-                {
-                    "title": "Próximo",
-                    "nextSceneIndex": "customizeLeftSide2"
-                }
-            ]
-        },
-        {
-            "id": "customizeLeftSide2",
-            "text": "Selecione uma opção no painel dos tipos para abrir as opções de cores. Ao escolher uma cor, ela será aplicada automaticamente.",
-            "image": "DialogueSystem/images/optionsTypeColors",
-            "options": [
-                {
-                    "title": "Próximo",
-                    "nextSceneIndex": "customizeRightSide1"
-                }
-            ]
-        },
-        {
-            "id": "customizeRightSide1",
-            "text": "No lado direito, escolha diferentes tipos de cabelo, pegue um e arrate para minha cabeça.",
-            "image": null,
-            "options": [
-                {
-                    "title": "Próximo",
-                    "nextSceneIndex": "customizeRightSide2"
-                }
-            ]
-        },
-        {
-            "id": "customizeRightSide2",
-            "text": "Ao finalizar, clique no botão 'Concluir Edição'. Caso queira voltar a editar, clique em 'Editar Avatar' no Menu do seu pulso.",
-            "image": null,
-            "options": [
-                {
-                    "title": "Percebi, obrigada!",
-                    "nextSceneIndex": "onBordingEnd"
-                }
-            ]
         },
         {
             "id": "onBordingEnd",

@@ -1,0 +1,96 @@
+{
+    "cases": [
+        {
+            "id": "onBoardingStart",
+            "text": "Finalmente um desafio! Esse é o jogo de organizar, posso te explicar como jogar?",
+            "image": null,
+            "options": [
+                {
+                    "title": "Sim",
+                    "nextSceneIndex": "organiseGameGoal"
+                },
+                {
+                    "title": "Já conheço",
+                    "nextSceneIndex": "onBordingEnd"
+                }
+            ]
+        },
+        {
+            "id": "start",
+            "text": "Oi! Gostaria de verificar as regras do jogo?",
+            "image": null,
+            "options": [
+                {
+                    "title": "Sim",
+                    "nextSceneIndex": "organiseGameGoal"
+                },
+                {
+                    "title": "Não preciso, obrigado",
+                    "nextSceneIndex": "organiseGameExit"
+                }
+            ]
+        },
+        {
+            "id": "organiseGameGoal",
+            "text": "O objetivo do jogo é organizar as peças no tabuleiro para que todas da mesma cor fiquem juntas.",
+            "image": "DialogueSystem/images/organised",
+            "options": [
+                {
+                    "title": "Prosseguir",
+                    "nextSceneIndex": "organiseGameMovePiece"
+                }
+            ]
+        },
+        {
+            "id": "organiseGameMovePiece",
+            "text": "Para mover as peças, coloque o dedo indicador em cima da peça ou use o movimento de pinça para selecionar e arraste para a posição desejada.",
+            "image": "DialogueSystem/images/movePiece",
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "organiseGameFreeSpace"
+                }
+            ]
+        },
+        {
+            "id": "organiseGameFreeSpace",
+            "text": "Use os espaços vazios extras nos cantos superiores do tabuleiro e das colunas, para organizar as peças.",
+            "image": "DialogueSystem/images/emptySpace",
+            "options": [
+                {
+                    "title": "Próximo",
+                    "nextSceneIndex": "organiseGameColumn"
+                }
+            ]
+        },
+        {
+            "id": "organiseGameColumn",
+            "text": "Lembre-se que somente é possivel 3 peças por coluna, e que as peças só podem ser movidas para um espaço vazio.",
+            "image": null,
+            "options": [
+                {
+                    "title": "Percebi",
+                    "nextSceneIndex": "organiseGameEnd"
+                }
+            ]
+        },
+        {
+            "id": "onBordingEnd",
+            "text": "Ótimo! Caso deseje relembrar algo, pode me chamar no Menu que esta no seu pulso.",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        },
+        {
+            "id": "organiseGameExit",
+            "text": "Estarei por aqui caso precise. Me chame no Menu do seu pulso!",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        },
+        {
+            "id": "organiseGameEnd",
+            "text": "Divirta-se nesse desafio! Se precisar de ajuda, pode me chamar no Menu que esta no seu pulso.",
+            "image": "DialogueSystem/images/handMenu",
+            "options": []
+        }
+    ]
+}

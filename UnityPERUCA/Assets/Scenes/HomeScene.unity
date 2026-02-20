@@ -20879,6 +20879,7 @@ GameObject:
   - component: {fileID: 768911903}
   - component: {fileID: 768911902}
   - component: {fileID: 768911909}
+  - component: {fileID: 95241916816808984}
   m_Layer: 7
   m_Name: MainCharacters
   m_TagString: Untagged
@@ -35768,6 +35769,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &95241916816808984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588895474677561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77bc2f7cc4db5404c85203b5bd804fec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RotateAroundAxisOnActivate
+  axis: 1
+  pivot: {fileID: 0}
+  target: {fileID: 4005076839534819}
+  duration: 1
+  smooth: 1
+  allowRepeat: 0
+  mode: 1
+  continuousSpeed: 60
 --- !u!137 &137000020405721593
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0

@@ -7,8 +7,6 @@ namespace AvatarLab {
         [SerializeField]
         private Button optionButton;
 
-        private bool firstTime = true;
-
         void OnEnable()
         {
             optionButton.onClick.AddListener(Finish);
@@ -21,13 +19,10 @@ namespace AvatarLab {
 
         private void Finish()
         {
-            if (firstTime)
+            if (!DialogueManager.instance.VerifyShouldShowActionsDialogue())
             {
-                firstTime = false;
-                DialogueManager.instance.SetDialogueScene(DialogueScene.Actions, true);
-                return;
+                AvatarManager.instance.UpdateAvatarState(AvatarState.Game);
             }
-            AvatarManager.instance.UpdateAvatarState(AvatarState.Game);
         }
     }
 }

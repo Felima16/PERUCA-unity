@@ -68,7 +68,7 @@ public class SceneManager : MonoBehaviour
         // Load dialogue cases for each scene from JSON files
         scenes[DialogueScene.AvatarEditor] = GetSceneFromJSON("DialogueSystem/Cases/EditCase");
         scenes[DialogueScene.Actions] = GetSceneFromJSON("DialogueSystem/Cases/ActionsCase");
-        // scenes[DialogueScene.PuzzleGame] = GetSceneFromJSON("Assets/Game/Script/DialogueSystem/PuzzleGame.json");
+        scenes[DialogueScene.OrganiseGame] = GetSceneFromJSON("DialogueSystem/Cases/OrganiseGameCase");
 
         return scenes;
     }

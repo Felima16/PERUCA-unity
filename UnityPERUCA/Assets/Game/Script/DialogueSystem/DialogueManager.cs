@@ -39,6 +39,9 @@ public class DialogueManager : MonoBehaviour
     // To track previous game state to return after dialogue
     private AvatarState previousAvatarState = AvatarState.Edit;
 
+    private bool isFirstTimeOrganiseGame = true;
+    private bool isFirstTimeAction = true;
+
     private void Awake()
     {
         if (instance == null)
@@ -89,6 +92,26 @@ public class DialogueManager : MonoBehaviour
         textPanel.SetActive(true);
     }
 
+    public void VerifyShouldShowOrganiseGameDialogue()
+    {
+        if (isFirstTimeOrganiseGame)
+        {
+            isFirstTimeOrganiseGame = false;
+            SetDialogueScene(DialogueScene.OrganiseGame, true);
+        }
+    }
+
+    public bool VerifyShouldShowActionsDialogue()
+    {
+        if (isFirstTimeAction)
+        {
+            isFirstTimeAction = false;
+            SetDialogueScene(DialogueScene.Actions, true);
+            return true;
+        }
+        return false;
+    }
+
     private void SetNextDialogueCase(String index)
     {
         currentDialogueCase = currentDialogueScene.Find(dc => dc.id == index);
@@ -97,7 +120,7 @@ public class DialogueManager : MonoBehaviour
             FinishDialogue(); // If no case found, finish the dialogue
             return;
         }
-
+        
         displayDialogText.text = currentDialogueCase.text;
         
         // Load image from Resources
