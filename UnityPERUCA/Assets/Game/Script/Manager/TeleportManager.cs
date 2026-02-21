@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion;
 using System.Collections.Generic;
 
 public class TeleportManager: MonoBehaviour
@@ -7,6 +8,7 @@ public class TeleportManager: MonoBehaviour
     private static TeleportManager instance;
     private static List<TeleportationAnchor> teleportAnchors = new List<TeleportationAnchor>();
     private TeleportationProvider teleportationProvider;
+    private TeleportPlaces? lastRequestedPlace = null;
 
     /// <summary>
     /// Get the singleton instance of TeleportManager
@@ -54,6 +56,7 @@ public class TeleportManager: MonoBehaviour
         else
         {
             Debug.Log("[TeleportManager] Found TeleportationProvider");
+            teleportationProvider.locomotionEnded += OnTeleportCompleted;
         }
     }
 
@@ -92,6 +95,10 @@ public class TeleportManager: MonoBehaviour
         {
             instance = null;
             teleportAnchors.Clear();
+            if (teleportationProvider != null)
+            {
+                teleportationProvider.locomotionEnded -= OnTeleportCompleted;
+            }
         }
     }
 
@@ -120,6 +127,7 @@ public class TeleportManager: MonoBehaviour
         }
 
         Debug.Log($"[TeleportManager] Teleporting to anchor: {anchor.gameObject.name}");
+        lastRequestedPlace = anchorPlace;
 
         var yAngle = 0f;
         switch (direction)
@@ -148,6 +156,16 @@ public class TeleportManager: MonoBehaviour
             matchOrientation = MatchOrientation.TargetUpAndForward
         };
         teleportationProvider.QueueTeleportRequest(teleportRequest);
+    }
+
+    private void OnTeleportCompleted(LocomotionProvider locomotionProvider)
+    {
+        Debug.Log("[TeleportManager] Teleportation completed.");
+        if (lastRequestedPlace == TeleportPlaces.OrganiseGame)
+        {
+            DialogueManager.instance.VerifyShouldShowOrganiseGameDialogue();
+        }
+        lastRequestedPlace = null;
     }
 }
 

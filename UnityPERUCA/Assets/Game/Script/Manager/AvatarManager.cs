@@ -25,7 +25,6 @@ public class AvatarManager : MonoBehaviour
 
         OnAvatarStateChanged?.Invoke(newState);
     }
-
     void OnDestroy()
     {
         instance = null;

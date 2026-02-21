@@ -35,7 +35,7 @@ public class MenuOption
                 HowToMove();
                 break;
             case SubMenu.HowToPlayOrganiseGame:
-                // Logic for how to play organise game
+                HowToPlayOrganiseGame();
                 break;
             case SubMenu.HowToEditAvatar:
                 HowToEditAvatar();
@@ -80,5 +80,12 @@ public class MenuOption
        // Implementation for how to move
         DebugManager.instance.MyLOG("->>>> Showing How to Move");
         DialogueManager.instance.SetDialogueScene(DialogueScene.Actions, false);
+    }
+
+    private void HowToPlayOrganiseGame()
+    {
+       // Implementation for how to play organise game
+        DebugManager.instance.MyLOG("->>>> Showing How to Play Organise Game");
+        DialogueManager.instance.SetDialogueScene(DialogueScene.OrganiseGame , false);
     }
 }

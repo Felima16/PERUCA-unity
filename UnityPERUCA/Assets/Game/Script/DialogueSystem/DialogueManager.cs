@@ -39,6 +39,9 @@ public class DialogueManager : MonoBehaviour
     // To track previous game state to return after dialogue
     private AvatarState previousAvatarState = AvatarState.Edit;
 
+    private bool isFirstTimeOrganiseGame = true;
+    private bool isFirstTimeAction = true;
+
     private void Awake()
     {
         if (instance == null)
@@ -51,6 +54,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueCases = SceneManager.Instance.GetScenes();
         finishButton.gameObject.SetActive(false);
+        finishButton.onClick.AddListener(() => FinishDialogue());
         SetupUI(); // Setup UI for dialogue options
         SetDialogueScene(DialogueScene.AvatarEditor, true); // Start with AvatarEditor scene and onboarding
     }
@@ -58,6 +62,12 @@ public class DialogueManager : MonoBehaviour
     void OnDestroy()
     {
         instance = null;
+        finishButton.onClick.RemoveListener(() => FinishDialogue());
+        for (int i = 0; i < optionButtons.Length; i++)
+        {
+            int index = i; // Capture the current index for the button click event
+            optionButtons[i].onClick.RemoveListener(() => OnOptionSelected(index));
+        }
     }
 
     // Method to handle dialogue cases
@@ -73,8 +83,8 @@ public class DialogueManager : MonoBehaviour
     // Method to set the dialogue sequence based on the current scene
     public void SetDialogueScene(DialogueScene newScene, bool isOnboarding = false)
     {
-        bool isFirstTimeAction = newScene == DialogueScene.Actions && isOnboarding;
-        previousAvatarState = isFirstTimeAction ? AvatarState.Game : AvatarManager.instance.state;
+        bool isActionsOnboarding = newScene == DialogueScene.Actions && isOnboarding;
+        previousAvatarState = isActionsOnboarding ? AvatarState.Game : AvatarManager.instance.state;
         AvatarManager.instance.UpdateAvatarState(AvatarState.Help);
         
         scene = newScene;
@@ -89,6 +99,26 @@ public class DialogueManager : MonoBehaviour
         textPanel.SetActive(true);
     }
 
+    public void VerifyShouldShowOrganiseGameDialogue()
+    {
+        if (isFirstTimeOrganiseGame)
+        {
+            isFirstTimeOrganiseGame = false;
+            SetDialogueScene(DialogueScene.OrganiseGame, true);
+        }
+    }
+
+    public bool VerifyShouldShowActionsDialogue()
+    {
+        if (isFirstTimeAction)
+        {
+            isFirstTimeAction = false;
+            SetDialogueScene(DialogueScene.Actions, true);
+            return true;
+        }
+        return false;
+    }
+
     private void SetNextDialogueCase(String index)
     {
         currentDialogueCase = currentDialogueScene.Find(dc => dc.id == index);
@@ -97,7 +127,7 @@ public class DialogueManager : MonoBehaviour
             FinishDialogue(); // If no case found, finish the dialogue
             return;
         }
-
+        
         displayDialogText.text = currentDialogueCase.text;
         
         // Load image from Resources
@@ -153,7 +183,6 @@ public class DialogueManager : MonoBehaviour
         {
             finishButton.gameObject.SetActive(true);
             finishButton.GetComponentInChildren<TextMeshProUGUI>().text = "Finalizar";
-            finishButton.onClick.AddListener(() => FinishDialogue());
         }
     }
 
