@@ -163,7 +163,14 @@ public class TeleportManager: MonoBehaviour
         Debug.Log("[TeleportManager] Teleportation completed.");
         if (lastRequestedPlace == TeleportPlaces.OrganiseGame)
         {
-            DialogueManager.instance.VerifyShouldShowOrganiseGameDialogue();
+            if (DialogueManager.instance != null)
+            {
+                DialogueManager.instance.VerifyShouldShowOrganiseGameDialogue();
+            }
+            else
+            {
+                Debug.LogWarning("[TeleportManager] DialogueManager instance is null; cannot verify OrganiseGame dialogue after teleport.");
+            }
         }
         lastRequestedPlace = null;
     }

@@ -62,11 +62,11 @@ public class DialogueManager : MonoBehaviour
     void OnDestroy()
     {
         instance = null;
-        finishButton.onClick.RemoveListener(() => FinishDialogue());
+        finishButton.onClick.RemoveAllListeners();
         for (int i = 0; i < optionButtons.Length; i++)
         {
             int index = i; // Capture the current index for the button click event
-            optionButtons[i].onClick.RemoveListener(() => OnOptionSelected(index));
+            optionButtons[i].onClick.RemoveAllListeners();
         }
     }
 
