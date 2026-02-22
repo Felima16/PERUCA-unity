@@ -27,20 +27,6 @@ public class MenuScript : MonoBehaviour
 
     // Create internal variables
     private Menu[] menus;
-    // {
-    //     new Menu("Ação", MainMenu.Teleport, new MenuOption[]
-    //     {
-    //         new MenuOption("Editar Avatar", SubMenu.GoToAvatarEdit, OnToggleChanged),
-    //         new MenuOption("Ir ao jogo Organizar", SubMenu.GoToOrganiseGame, toggleGameObject.ToggleActiveState),
-    //         new MenuOption("Ver a janela", SubMenu.GoToWindow, toggleGameObject.ToggleActiveState)
-    //     }),
-    //     new Menu("Ajuda do Avatar", MainMenu.AvatarHelp, new MenuOption[]
-    //     {
-    //         new MenuOption("Como Editar Avatar", SubMenu.HowToEditAvatar, toggleGameObject.ToggleActiveState),
-    //         new MenuOption("Como Mover", SubMenu.HowToMove, toggleGameObject.ToggleActiveState),
-    //         new MenuOption("Como Jogar Organizar Jogo", SubMenu.HowToPlayOrganiseGame, toggleGameObject.ToggleActiveState)
-    //     })
-    // };
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
