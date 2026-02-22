@@ -43,7 +43,7 @@
         },
         {
             "id": "actionsMenu",
-            "text": "Para se locomover entre os pontos disponíveis, basta clicar no botão 'Ação' no Menu do seu pulso.",
+            "text": "Para se locomover entre os pontos disponíveis, clique no botão 'Ação' no Menu do seu pulso.",
             "image": "DialogueSystem/images/mainMenu",
             "options": [
                 {

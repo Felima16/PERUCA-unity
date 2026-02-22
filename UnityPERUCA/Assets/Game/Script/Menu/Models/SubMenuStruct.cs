@@ -15,10 +15,14 @@ public class MenuOption
     public String title;
     public SubMenu subMenu;
 
-    public MenuOption(String title, SubMenu subMenu)
+    // Callback that fires when action completes
+    private Action onActionInvoked;
+
+    public MenuOption(String title, SubMenu subMenu, Action onActionInvoked = null)
     {
         this.title = title;
         this.subMenu = subMenu;
+        this.onActionInvoked = onActionInvoked;
     }
 
     public void HandleSubMenuClick()
@@ -52,6 +56,7 @@ public class MenuOption
         DebugManager.instance.MyLOG("->>>> Navigating to Avatar Edit");
         TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.AvatarEdit, TeleportDirection.Left);
         AvatarManager.instance.UpdateAvatarState(AvatarState.Edit);
+        onActionInvoked?.Invoke();
     }
 
     private void GoToWindow()
@@ -59,6 +64,7 @@ public class MenuOption
        // Implementation for going to window
         DebugManager.instance.MyLOG("->>>> Navigating to Window");
         TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.Window, TeleportDirection.Backward);
+        onActionInvoked?.Invoke();
     }
 
     private void GoToOrganiseGame()
@@ -66,6 +72,7 @@ public class MenuOption
        // Implementation for going to organise game
         DebugManager.instance.MyLOG("->>>> Navigating to Organise Game");
         TeleportManager.Instance.TeleportToAnchor(TeleportPlaces.OrganiseGame, TeleportDirection.Right);
+        onActionInvoked?.Invoke();
     }
 
     private void HowToEditAvatar()
@@ -73,6 +80,7 @@ public class MenuOption
        // Implementation for how to edit avatar
         DebugManager.instance.MyLOG("->>>> Showing How to Edit Avatar");
         DialogueManager.instance.SetDialogueScene(DialogueScene.AvatarEditor, false);
+        onActionInvoked?.Invoke();
     }
 
     private void HowToMove()
@@ -80,6 +88,7 @@ public class MenuOption
        // Implementation for how to move
         DebugManager.instance.MyLOG("->>>> Showing How to Move");
         DialogueManager.instance.SetDialogueScene(DialogueScene.Actions, false);
+        onActionInvoked?.Invoke();
     }
 
     private void HowToPlayOrganiseGame()
@@ -87,5 +96,6 @@ public class MenuOption
        // Implementation for how to play organise game
         DebugManager.instance.MyLOG("->>>> Showing How to Play Organise Game");
         DialogueManager.instance.SetDialogueScene(DialogueScene.OrganiseGame , false);
+        onActionInvoked?.Invoke();
     }
 }

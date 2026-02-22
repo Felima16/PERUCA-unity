@@ -35,6 +35,7 @@ public class DialogueManager : MonoBehaviour
     private Dictionary<DialogueScene, List<DialogueCase>> dialogueCases = new Dictionary<DialogueScene, List<DialogueCase>>();
     private List<DialogueCase> currentDialogueScene = new List<DialogueCase>();
     private DialogueCase currentDialogueCase;
+    private Coroutine nextCaseCoroutine;
 
     // To track previous game state to return after dialogue
     private AvatarState previousAvatarState = AvatarState.Edit;
@@ -62,11 +63,10 @@ public class DialogueManager : MonoBehaviour
     void OnDestroy()
     {
         instance = null;
-        finishButton.onClick.RemoveListener(() => FinishDialogue());
+        finishButton.onClick.RemoveAllListeners();
         for (int i = 0; i < optionButtons.Length; i++)
         {
-            int index = i; // Capture the current index for the button click event
-            optionButtons[i].onClick.RemoveListener(() => OnOptionSelected(index));
+            optionButtons[i].onClick.RemoveAllListeners();
         }
     }
 
@@ -138,7 +138,7 @@ public class DialogueManager : MonoBehaviour
                 Texture2D texture = Resources.Load<Texture2D>(currentDialogueCase.image);
                 if (texture != null)
                 {
-                    displayDialogImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                    displayDialogImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.7f, 0.7f));
                     imagePanel.SetActive(true);
                 }
                 else
@@ -171,6 +171,7 @@ public class DialogueManager : MonoBehaviour
             if (i < currentDialogueCase.options.Length)
             {
                 optionButtons[i].gameObject.SetActive(true);
+                optionButtons[i].interactable = true;
                 optionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = currentDialogueCase.options[i].title;
             }
             else
@@ -203,8 +204,25 @@ public class DialogueManager : MonoBehaviour
         if (currentDialogueCase == null || optionIndex < 0 || optionIndex >= currentDialogueCase.options.Length)
             return;
 
+        // Disable all option buttons immediately to prevent double-click / multiple coroutines
+        for (int i = 0; i < optionButtons.Length; i++)
+            optionButtons[i].interactable = false;
+
         // Logic to handle the selected option
         String nextSceneIndex = currentDialogueCase.options[optionIndex].nextSceneIndex;
-        SetNextDialogueCase(nextSceneIndex);
+        SetNextDialogueCaseWithDelay(nextSceneIndex);
+    }
+
+    void SetNextDialogueCaseWithDelay(String index, float delaySeconds = 0.5f)
+    {
+        if (nextCaseCoroutine != null)
+            StopCoroutine(nextCaseCoroutine);
+        nextCaseCoroutine = StartCoroutine(SetNextDialogueCaseDelayedCoroutine(index, delaySeconds));
+    }
+
+    private IEnumerator SetNextDialogueCaseDelayedCoroutine(String index, float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        SetNextDialogueCase(index);
     }
 }
