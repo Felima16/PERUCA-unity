@@ -63,12 +63,6 @@ public class RotateAroundAxisOnActivate : MonoBehaviour
         }
     }
 
-    public void ResetRotation()
-    {
-        if (target == null) target = transform;
-        target.rotation = Quaternion.identity;
-    }
-
     [ContextMenu("Trigger Rotate")]
     void ContextTriggerRotate() => TriggerRotate();
 
