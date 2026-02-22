@@ -65,7 +65,6 @@ public class DialogueManager : MonoBehaviour
         finishButton.onClick.RemoveAllListeners();
         for (int i = 0; i < optionButtons.Length; i++)
         {
-            int index = i; // Capture the current index for the button click event
             optionButtons[i].onClick.RemoveAllListeners();
         }
     }

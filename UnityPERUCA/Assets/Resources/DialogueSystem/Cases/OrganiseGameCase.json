@@ -88,7 +88,7 @@
         },
         {
             "id": "organiseGameEnd",
-            "text": "Divirta-se nesse desafio! Se precisar de ajuda, me chamar no Menu que está no seu pulso.",
+            "text": "Divirta-se nesse desafio! Se precisar de ajuda, me chame no Menu que está no seu pulso.",
             "image": "DialogueSystem/images/handMenu",
             "options": []
         }

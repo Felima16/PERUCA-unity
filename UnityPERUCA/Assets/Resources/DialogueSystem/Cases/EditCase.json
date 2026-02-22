@@ -76,7 +76,7 @@
         },
         {
             "id": "customizeLeftSideHandlePanel",
-            "text": "Abaixo dos painéis, há um componente de manipulação. Agarrando-o, te permite ajustar a posição dos painéis.",
+            "text": "Abaixo dos painéis, há um componente de manipulação. Ao agarrá-lo, você pode ajustar a posição dos painéis.",
             "image": "DialogueSystem/images/handlePanel",
             "options": [
                 {

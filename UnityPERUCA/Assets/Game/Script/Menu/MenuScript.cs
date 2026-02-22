@@ -21,10 +21,6 @@ public class MenuScript : MonoBehaviour
     
     [SerializeField] private ScrollRect subMenu;
 
-    [Header("Depenndencies")]
-    [SerializeField]
-    private ToggleGameObject toggleGameObject;
-
     // Create internal variables
     private Menu[] menus;
     
@@ -36,9 +32,19 @@ public class MenuScript : MonoBehaviour
 
     // Mark: Init dependencies
     void Awake() {
+        GameObject textButtonObject = GameObject.Find("Text Button");
+        if (textButtonObject == null)
+        {
+            Debug.LogError("MenuScript: Could not find GameObject named 'Text Button'. Disabling MenuScript.");
+            enabled = false;
+            return;
+        }
+        toggleGameObject = textButtonObject.GetComponent<ToggleGameObject>();
         if (toggleGameObject == null)
         {
-            toggleGameObject = GameObject.Find("Text Button").GetComponent<ToggleGameObject>();
+            Debug.LogError("MenuScript: 'Text Button' GameObject is missing a ToggleGameObject component. Disabling MenuScript.");
+            enabled = false;
+            return;
         }
     }
 
@@ -112,15 +118,6 @@ public class MenuScript : MonoBehaviour
             {
                 CreateSubMenuButton(option.title, option.HandleSubMenuClick);
             }
-        }
-    }
-
-    private void OnToggleChanged()
-    {
-        // Handle toggle change if needed
-        if(toggleGameObject != null)
-        {
-            toggleGameObject.ToggleActiveState();
         }
     }
 }
