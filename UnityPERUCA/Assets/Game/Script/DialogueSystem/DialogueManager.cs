@@ -35,6 +35,7 @@ public class DialogueManager : MonoBehaviour
     private Dictionary<DialogueScene, List<DialogueCase>> dialogueCases = new Dictionary<DialogueScene, List<DialogueCase>>();
     private List<DialogueCase> currentDialogueScene = new List<DialogueCase>();
     private DialogueCase currentDialogueCase;
+    private Coroutine nextCaseCoroutine;
 
     // To track previous game state to return after dialogue
     private AvatarState previousAvatarState = AvatarState.Edit;
@@ -170,6 +171,7 @@ public class DialogueManager : MonoBehaviour
             if (i < currentDialogueCase.options.Length)
             {
                 optionButtons[i].gameObject.SetActive(true);
+                optionButtons[i].interactable = true;
                 optionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = currentDialogueCase.options[i].title;
             }
             else
@@ -202,6 +204,10 @@ public class DialogueManager : MonoBehaviour
         if (currentDialogueCase == null || optionIndex < 0 || optionIndex >= currentDialogueCase.options.Length)
             return;
 
+        // Disable all option buttons immediately to prevent double-click / multiple coroutines
+        for (int i = 0; i < optionButtons.Length; i++)
+            optionButtons[i].interactable = false;
+
         // Logic to handle the selected option
         String nextSceneIndex = currentDialogueCase.options[optionIndex].nextSceneIndex;
         SetNextDialogueCaseWithDelay(nextSceneIndex);
@@ -209,7 +215,9 @@ public class DialogueManager : MonoBehaviour
 
     void SetNextDialogueCaseWithDelay(String index, float delaySeconds = 0.5f)
     {
-        StartCoroutine(SetNextDialogueCaseDelayedCoroutine(index, delaySeconds));
+        if (nextCaseCoroutine != null)
+            StopCoroutine(nextCaseCoroutine);
+        nextCaseCoroutine = StartCoroutine(SetNextDialogueCaseDelayedCoroutine(index, delaySeconds));
     }
 
     private IEnumerator SetNextDialogueCaseDelayedCoroutine(String index, float delaySeconds)
