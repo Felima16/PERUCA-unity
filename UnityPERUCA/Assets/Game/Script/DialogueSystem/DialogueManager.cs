@@ -138,7 +138,7 @@ public class DialogueManager : MonoBehaviour
                 Texture2D texture = Resources.Load<Texture2D>(currentDialogueCase.image);
                 if (texture != null)
                 {
-                    displayDialogImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                    displayDialogImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.7f, 0.7f));
                     imagePanel.SetActive(true);
                 }
                 else
@@ -205,6 +205,17 @@ public class DialogueManager : MonoBehaviour
 
         // Logic to handle the selected option
         String nextSceneIndex = currentDialogueCase.options[optionIndex].nextSceneIndex;
-        SetNextDialogueCase(nextSceneIndex);
+        SetNextDialogueCaseWithDelay(nextSceneIndex);
+    }
+
+    void SetNextDialogueCaseWithDelay(String index, float delaySeconds = 0.5f)
+    {
+        StartCoroutine(SetNextDialogueCaseDelayedCoroutine(index, delaySeconds));
+    }
+
+    private IEnumerator SetNextDialogueCaseDelayedCoroutine(String index, float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        SetNextDialogueCase(index);
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.XR.Interaction.Toolkit.Samples.Hands;
 
 public class MenuScript : MonoBehaviour
 {
@@ -20,22 +21,26 @@ public class MenuScript : MonoBehaviour
     
     [SerializeField] private ScrollRect subMenu;
 
+    [Header("Depenndencies")]
+    [SerializeField]
+    private ToggleGameObject toggleGameObject;
+
     // Create internal variables
-    private Menu[] menus = new Menu[]
-    {
-        new Menu("Ação", MainMenu.Teleport, new MenuOption[]
-        {
-            new MenuOption("Editar Avatar", SubMenu.GoToAvatarEdit),
-            new MenuOption("Ir ao jogo Organizar", SubMenu.GoToOrganiseGame),
-            new MenuOption("Ver a janela", SubMenu.GoToWindow)
-        }),
-        new Menu("Ajuda do Avatar", MainMenu.AvatarHelp, new MenuOption[]
-        {
-            new MenuOption("Como Editar Avatar", SubMenu.HowToEditAvatar),
-            new MenuOption("Como Mover", SubMenu.HowToMove),
-            new MenuOption("Como Jogar Organizar Jogo", SubMenu.HowToPlayOrganiseGame)
-        })
-    };
+    private Menu[] menus;
+    // {
+    //     new Menu("Ação", MainMenu.Teleport, new MenuOption[]
+    //     {
+    //         new MenuOption("Editar Avatar", SubMenu.GoToAvatarEdit, OnToggleChanged),
+    //         new MenuOption("Ir ao jogo Organizar", SubMenu.GoToOrganiseGame, toggleGameObject.ToggleActiveState),
+    //         new MenuOption("Ver a janela", SubMenu.GoToWindow, toggleGameObject.ToggleActiveState)
+    //     }),
+    //     new Menu("Ajuda do Avatar", MainMenu.AvatarHelp, new MenuOption[]
+    //     {
+    //         new MenuOption("Como Editar Avatar", SubMenu.HowToEditAvatar, toggleGameObject.ToggleActiveState),
+    //         new MenuOption("Como Mover", SubMenu.HowToMove, toggleGameObject.ToggleActiveState),
+    //         new MenuOption("Como Jogar Organizar Jogo", SubMenu.HowToPlayOrganiseGame, toggleGameObject.ToggleActiveState)
+    //     })
+    // };
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,9 +48,37 @@ public class MenuScript : MonoBehaviour
         MakeMainMenu();
     }
 
+    // Mark: Init dependencies
+    void Awake() {
+        if (toggleGameObject == null)
+        {
+            toggleGameObject = GameObject.Find("Text Button").GetComponent<ToggleGameObject>();
+        }
+    }
+
     // MARK: Building Menus
+    private Menu[] CreateMenus()
+    {
+        return new Menu[]
+        {
+            new Menu("Ação", MainMenu.Teleport, new MenuOption[]
+            {
+                new MenuOption("Editar Avatar", SubMenu.GoToAvatarEdit, toggleGameObject.ToggleActiveState),
+                new MenuOption("Ir ao jogo Organizar", SubMenu.GoToOrganiseGame, toggleGameObject.ToggleActiveState),
+                new MenuOption("Ver a janela", SubMenu.GoToWindow, toggleGameObject.ToggleActiveState)
+            }),
+            new Menu("Ajuda do Avatar", MainMenu.AvatarHelp, new MenuOption[]
+            {
+                new MenuOption("Como Editar Avatar", SubMenu.HowToEditAvatar, toggleGameObject.ToggleActiveState),
+                new MenuOption("Como Mover", SubMenu.HowToMove, toggleGameObject.ToggleActiveState),
+                new MenuOption("Como Jogar Organizar Jogo", SubMenu.HowToPlayOrganiseGame, toggleGameObject.ToggleActiveState)
+            })
+        };
+    }
+
     private void MakeMainMenu()
     {
+        menus = CreateMenus();
         foreach (Menu menu in menus)
         {
             // Create button for each menu
@@ -93,6 +126,15 @@ public class MenuScript : MonoBehaviour
             {
                 CreateSubMenuButton(option.title, option.HandleSubMenuClick);
             }
+        }
+    }
+
+    private void OnToggleChanged()
+    {
+        // Handle toggle change if needed
+        if(toggleGameObject != null)
+        {
+            toggleGameObject.ToggleActiveState();
         }
     }
 }
