@@ -204,7 +204,15 @@ namespace AvatarLab.Wander
                     {
                         if (shouldRotateToTarget)
                         {
-                            targetRotation = CalculateFaceTowardsRotation(playerPositionHelper.position);
+                            if (playerPositionHelper != null)
+                            {
+                                targetRotation = CalculateFaceTowardsRotation(playerPositionHelper.position);
+                            }
+                            else
+                            {
+                                // No player position available; treat current rotation as the desired one.
+                                targetRotation = transform.rotation;
+                            }
                             shouldRotateToTarget = false; // Ensure we only set the target rotation once upon arrival
                         }
                         
