@@ -416,7 +416,8 @@ namespace AvatarLab.Wander
         /// <summary>
         /// Moves the avatar to a specific position with running animation.
         /// When the avatar arrives, it automatically switches to idle animation
-        /// and rotates to face the target direction.
+        /// and, if a player position helper is available, rotates to face that helper;
+        /// otherwise, it keeps its current rotation.
         /// </summary>
         /// <param name="targetPosition">The world position to move to</param>
         public void MoveToPosition(Vector3 targetPosition)
