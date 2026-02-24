@@ -9,7 +9,7 @@ namespace AvatarLab.Wander
     [RequireComponent(typeof(Animator))]
     public class AvatarWander : MonoBehaviour
     {
-        private const float ARRIVAL_DISTANCE = 0.7f;
+        private const float ARRIVAL_DISTANCE = 0.2f;
         private const float EDIT_DISTANCE = 0f;
         private const float WANDER_RANGE = 30f;
 
@@ -204,21 +204,33 @@ namespace AvatarLab.Wander
                     {
                         if (shouldRotateToTarget)
                         {
-                            RotateTowardsTarget();
+                            if (playerPositionHelper != null)
+                            {
+                                targetRotation = CalculateFaceTowardsRotation(playerPositionHelper.position);
+                            }
+                            else
+                            {
+                                // No player position available; treat current rotation as the desired one.
+                                targetRotation = transform.rotation;
+                            }
+                            shouldRotateToTarget = false; // Ensure we only set the target rotation once upon arrival
                         }
                         
-                        if (!shouldRotateToTarget || HasReachedRotation())
+                        if (HasReachedRotation())
                         {
                             SetState(WanderState.Idle);
                             moveToPositionComplete?.Invoke();
-                            shouldRotateToTarget = false;
+                        } 
+                        else
+                        {
+                            RotateTowardsTarget();
                         }
                     }
                     break;
             }
 
             // Use NavMeshAgent for movement
-            bool isRotating = CurrentState == WanderState.DirectMovement && HasReachedTarget() && shouldRotateToTarget;
+            bool isRotating = CurrentState == WanderState.DirectMovement && HasReachedTarget();
             navMeshAgent.updatePosition = true;
             navMeshAgent.updateRotation = !isRotating;
             navMeshAgent.isStopped = isRotating;
@@ -233,17 +245,6 @@ namespace AvatarLab.Wander
             if (navMeshAgent.pathPending)
                 return false;
             return navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.01f;
-        }
-
-        private void FaceDirection(Vector3 direction)
-        {
-            if (direction.sqrMagnitude < 0.01f)
-                return;
-
-            transform.rotation = Quaternion.LookRotation(
-                Vector3.ProjectOnPlane(Vector3.RotateTowards(transform.forward, direction, turnSpeed * Time.deltaTime * Mathf.Deg2Rad, 0f), Vector3.up),
-                Vector3.up
-            );
         }
 
         private void RotateTowardsTarget()
@@ -414,31 +415,21 @@ namespace AvatarLab.Wander
 
         /// <summary>
         /// Moves the avatar to a specific position with running animation.
-        /// When the avatar arrives, it automatically switches to idle animation.
+        /// When the avatar arrives, it automatically switches to idle animation
+        /// and, if a player position helper is available, rotates to face that helper;
+        /// otherwise, it keeps its current rotation.
         /// </summary>
         /// <param name="targetPosition">The world position to move to</param>
-        /// <param name="faceTowards">Optional position to face towards when reached (e.g., player position for face-to-face)</param>
-        public void MoveToPosition(Vector3 targetPosition, Vector3? faceTowards = null)
+        public void MoveToPosition(Vector3 targetPosition)
         {
             if (!isStarted)
             {
                 Debug.LogWarning("AvatarWander has not started yet.");
                 return;
             }
-
             directMovementTarget = targetPosition;
             ValidateNavMeshPosition(ref directMovementTarget);
-            
-            if (faceTowards.HasValue)
-            {
-                shouldRotateToTarget = true;
-                targetRotation = CalculateFaceTowardsRotation(faceTowards.Value);
-            }
-            else
-            {
-                shouldRotateToTarget = false;
-            }
-            
+            shouldRotateToTarget = true;
             SetState(WanderState.DirectMovement);
         }
 
@@ -459,11 +450,11 @@ namespace AvatarLab.Wander
 
                 case AvatarState.Edit:
                     navMeshAgent.stoppingDistance = EDIT_DISTANCE;
-                    MoveToPosition(editPosition, playerPositionHelper.position);
+                    MoveToPosition(editPosition);
                     break;
                 case AvatarState.Help:
                     navMeshAgent.stoppingDistance = ARRIVAL_DISTANCE;
-                    MoveToPosition(playerPositionHelper.position, playerPositionHelper.position);
+                    MoveToPosition(playerPositionHelper.position);
                     break;
             }
         }

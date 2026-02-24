@@ -72413,7 +72413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1339486457467704876, guid: ce42a2960e8f8411fa095f49ec8ade8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2087713964106421129, guid: ce42a2960e8f8411fa095f49ec8ade8c, type: 3}
       propertyPath: m_Pivot.x
