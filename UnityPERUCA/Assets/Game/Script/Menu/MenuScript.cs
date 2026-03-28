@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.XR.Interaction.Toolkit.Samples.Hands;
-using UnityEngine.XR.Interaction.Toolkit.UI.BodyUI;
 
 public class MenuScript : MonoBehaviour
 {
