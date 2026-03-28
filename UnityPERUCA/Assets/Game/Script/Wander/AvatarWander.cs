@@ -16,15 +16,12 @@ namespace AvatarLab.Wander
         [SerializeField] private Transform playerPositionHelper;
         [SerializeField] private IdleState[] idleStates;
         [SerializeField] private MovementState[] movementStates;
-        [SerializeField] private bool logChanges = false;
-
         private Animator animator;
         private NavMeshAgent navMeshAgent;
         private Vector3 startPosition;
         private Vector3 editPosition;
         private int totalIdleStateWeight;
         private bool isStarted;
-
         private float moveSpeed;
         private float turnSpeed;
         private Vector3 wanderTarget;
@@ -51,11 +48,6 @@ namespace AvatarLab.Wander
             if (animator)
                 animatorParameters.UnionWith(animator.parameters.Select(p => p.name));
 
-            if (logChanges)
-            {
-                ValidateSetup(runtimeController);
-            }
-
             foreach (IdleState state in idleStates)
             {
                 totalIdleStateWeight += state.stateWeight;
@@ -74,70 +66,6 @@ namespace AvatarLab.Wander
             {
                 Debug.LogError($"{gameObject.name} does not have a NavMeshAgent component.");
                 enabled = false;
-            }
-        }
-
-        private void ValidateSetup(RuntimeAnimatorController runtimeController)
-        {
-            if (runtimeController == null)
-            {
-                Debug.LogError($"{gameObject.name} has no animator controller.");
-                enabled = false;
-                return;
-            }
-
-            if (animator.avatar == null)
-            {
-                Debug.LogError($"{gameObject.name} has no avatar.");
-                enabled = false;
-                return;
-            }
-
-            if (animator.hasRootMotion)
-            {
-                Debug.LogWarning($"{gameObject.name} has root motion enabled. Disabling it.");
-                animator.applyRootMotion = false;
-            }
-
-            if (idleStates.Length == 0 || movementStates.Length == 0)
-            {
-                Debug.LogError($"{gameObject.name} has no idle or movement states.");
-                enabled = false;
-                return;
-            }
-
-            foreach (var state in idleStates.Concat<AIState>(movementStates))
-            {
-                if (string.IsNullOrEmpty(state.animationBool))
-                {
-                    Debug.LogError($"{gameObject.name} has a state with no animation boolean set.");
-                    enabled = false;
-                    return;
-                }
-
-                if (!animatorParameters.Contains(state.animationBool))
-                {
-                    Debug.LogError($"{gameObject.name} animator does not have parameter '{state.animationBool}'.");
-                    enabled = false;
-                    return;
-                }
-            }
-
-            foreach (var state in movementStates)
-            {
-                if (state.moveSpeed <= 0)
-                {
-                    Debug.LogError($"{gameObject.name} movement state '{state.stateName}' has invalid speed.");
-                    enabled = false;
-                    return;
-                }
-
-                if (state.turnSpeed <= 0)
-                {
-                    Debug.LogError($"{gameObject.name} movement state '{state.stateName}' has invalid turn speed.");
-                    enabled = false;
-                    return;
-                }
             }
         }
 
@@ -204,15 +132,7 @@ namespace AvatarLab.Wander
                     {
                         if (shouldRotateToTarget)
                         {
-                            if (playerPositionHelper != null)
-                            {
-                                targetRotation = CalculateFaceTowardsRotation(playerPositionHelper.position);
-                            }
-                            else
-                            {
-                                // No player position available; treat current rotation as the desired one.
-                                targetRotation = transform.rotation;
-                            }
+                            targetRotation = CalculateFaceTowardsRotation(playerPositionHelper.position);
                             shouldRotateToTarget = false; // Ensure we only set the target rotation once upon arrival
                         }
                         
@@ -415,11 +335,10 @@ namespace AvatarLab.Wander
 
         /// <summary>
         /// Moves the avatar to a specific position with running animation.
-        /// When the avatar arrives, it automatically switches to idle animation
-        /// and, if a player position helper is available, rotates to face that helper;
-        /// otherwise, it keeps its current rotation.
+        /// When the avatar arrives, it automatically switches to idle animation.
         /// </summary>
         /// <param name="targetPosition">The world position to move to</param>
+        /// 
         public void MoveToPosition(Vector3 targetPosition)
         {
             if (!isStarted)
