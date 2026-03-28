@@ -9,6 +9,7 @@ TagManager:
   - PieceGreen
   - PieceYellow
   - PiecePurple
+  - Avatar
   layers:
   - Default
   - TransparentFX
